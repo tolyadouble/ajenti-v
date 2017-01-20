@@ -3,6 +3,7 @@ import shutil
 import subprocess
 
 from ajenti.api import *
+from ajenti.api.helpers import subprocess_call_background
 from ajenti.plugins.services.api import ServiceMultiplexor
 from ajenti.plugins.vh.api import WebserverComponent, SanityCheck, Restartable
 
@@ -187,5 +188,4 @@ class NginxWebserver (WebserverComponent):
 @plugin
 class NGINXRestartable (Restartable):
     def restart(self):
-        s = ServiceMultiplexor.get().get_one('nginx')
-        s.restart()
+        subprocess_call_background(['/etc/init.d/nginx', 'reload'])
